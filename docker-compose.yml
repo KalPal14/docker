@@ -1,0 +1,32 @@
+version: '3.1'
+
+services:
+  php:
+    # берём образ из ./php/Dockerfile
+    build: ./php
+    ports:
+      # !!! 80
+      # ошибок нет т.к. локальные порты отличаются
+      - 8081:80
+
+  # внутрипроектное название сервиса
+  db:
+    # образ который тут настраиваем
+    image: mysql
+    # стратегия действия при ошибках в этом сервисе
+    # restart: no - сервис не будет перезапускатся
+    restart: always
+    # для каждого сервиса прописаны в доке
+    # можно указать тут или взять с .env
+    environment:
+      MYSQL_ROOT_PASSWORD: pas123
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    # 8080 - локальный порт доступа
+    ports:
+      # !!! 80
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
